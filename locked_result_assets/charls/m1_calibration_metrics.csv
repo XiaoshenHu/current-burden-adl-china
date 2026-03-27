@@ -1,0 +1,2 @@
+model_code,analytic_sample,n,events,observed_event_rate,mean_predicted_risk,calibration_in_the_large_observed_minus_predicted,oof_auc,oof_brier,oof_calibration_intercept,oof_calibration_slope,top_decile_mean_predicted_risk,top_decile_observed_event_rate,top_decile_observed_minus_predicted
+M1,unified comparison sample,8355,1065,0.12746858168761221,0.1274443784814919,2.420320612031568e-05,0.7598990835732271,0.09904896906583933,0.0002488357389634332,0.9863442633755751,0.41722960279744953,0.3923444976076555,-0.024885105189794032

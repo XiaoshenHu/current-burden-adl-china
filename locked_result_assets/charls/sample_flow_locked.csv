@@ -1,0 +1,10 @@
+step,locked_n,official_n,difference,match_status
+baseline_wave1_participants,17708,17708,0,exact
+adversity_eligible_sample,14337,14337,0,exact
+trajectory_derivation_sample,12692,12692,0,exact
+alive_at_wave3_risk_set,16704,16704,0,exact
+primary_incident_adl_analytic_sample,8643,8643,0,exact
+unified_incident_adl_comparison_sample,8355,8355,0,exact
+composite_adl_or_death_sample,8943,8943,0,exact
+supportive_incident_iadl_sample,8276,8276,0,exact
+post_landmark_mortality_sample,12550,12550,0,exact

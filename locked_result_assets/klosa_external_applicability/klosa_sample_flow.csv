@@ -1,0 +1,6 @@
+step_order,step,count,notes
+1,Wave 3 harmonized interview sample,7920,Interviewed and alive at wave 3 in GH_KLoSA_f.
+2,Age >=45 at wave 3,7920,Retained wave-3 interviewees who met the KLoSA age threshold used in the CHARLS target study.
+3,ADL-disability-free at landmark,7555,Defined as r3adltotba_k = 0.No before the next-wave outcome window.
+4,Observed wave-4 ADL outcome,6987,Non-missing r4adltotba_k among the wave-3 ADL-free landmark risk set.
+5,Complete structural-M1 predictors,6208,"Landmark age, sex, low education, rural proxy, CES-D burden, cognition-derived deficit, grip-based physical proxy, and multimorbidity all observed."

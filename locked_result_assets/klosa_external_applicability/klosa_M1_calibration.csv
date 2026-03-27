@@ -1,0 +1,12 @@
+record_type,target_model,implemented_validation_label,calibration_intercept,calibration_slope,observed_vs_predicted_summary,grouping,group,n,group_share,event_n,observed_event_rate,mean_predicted_risk,observed_minus_predicted
+overall_metrics,M1 current-burden model,structural external replication,0.0020647768152559504,0.9445916582934665,"Overall calibration was acceptable, with mild overprediction in the highest-risk decile and low-decile instability consistent with the low event rate.",,,,,,,,
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,1,621,0.10003221649484537,2.0,0.00322061191626409,0.0012528738857006743,0.0019677380305634156
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,2,621,0.10003221649484537,2.0,0.00322061191626409,0.0021470006402466604,0.0010736112760174298
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,3,621,0.10003221649484537,2.0,0.00322061191626409,0.0032298021518944627,-9.190235630372485e-06
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,4,620,0.09987113402061856,2.0,0.0032258064516129032,0.004744425933070601,-0.0015186194814576976
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,5,621,0.10003221649484537,3.0,0.004830917874396135,0.006934517582759577,-0.002103599708363442
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,6,621,0.10003221649484537,4.0,0.00644122383252818,0.010547328433817118,-0.004106104601288937
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,7,620,0.09987113402061856,11.0,0.017741935483870968,0.01611379487109812,0.0016281406127728465
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,8,621,0.10003221649484537,17.0,0.027375201288244767,0.025016731297587864,0.002358469990656902
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,9,621,0.10003221649484537,33.0,0.05314009661835749,0.044275803513999866,0.008864293104357622
+decile_calibration,M1 current-burden model,structural external replication,,,,decile,10,621,0.10003221649484537,69.0,0.1111111111111111,0.11882813243329035,-0.007717021322179246
