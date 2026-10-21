@@ -27,6 +27,11 @@ upstream matplotlib/pyparsing deprecation warnings occur without test failures;
 direct versions remain those in the original release. macOS and Windows have
 not been executed in this repair.
 
+CI pins Ubuntu 22.04 for Python 3.9 and Ubuntu 24.04 for Python 3.12. The initial
+`ubuntu-latest` run reached Ubuntu 26.04, for which `setup-python` could not find
+Python 3.9; no analytical tests ran in that job. Fixed runner versions avoid
+that interpreter-installation failure and future implicit OS changes.
+
 **Not verified:** full CHARLS/KLoSA sample derivation, all estimated effects,
 performance/calibration metrics, uncertainty, figure/table regeneration, or
 the licensed Stata harmonization. These require the original source/input
