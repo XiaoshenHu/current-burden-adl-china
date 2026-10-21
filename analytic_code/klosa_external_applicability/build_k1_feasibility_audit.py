@@ -1,20 +1,21 @@
 from __future__ import annotations
 
 from pathlib import Path
+
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import find_stata, gateway_do_file, klosa_data_root, klosa_raw_dir, project_root
 import pandas as pd
 import zipfile
 from openpyxl import load_workbook
 
 
-PROJECT_ROOT = Path(
-    "/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging"
-)
-DATA_ROOT = Path(
-    "/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/DATA/public_databases/klosa"
-)
-RAW_DIR = DATA_ROOT / "KLoSA 1-9th wave (STATA)"
+PROJECT_ROOT = project_root()
+DATA_ROOT = klosa_data_root()
+RAW_DIR = klosa_raw_dir()
 KEIS_DIR = DATA_ROOT / "KEIS_codebooks"
-HARMONIZED_DO_FILE = DATA_ROOT / "bukpmcwp.do"
+HARMONIZED_DO_FILE = gateway_do_file()
 RESULTS_DIR = PROJECT_ROOT / "results" / "klosa_external_validation"
 
 
@@ -35,16 +36,7 @@ def detect_harmonized_klosa() -> list[Path]:
 
 
 def detect_stata_binary() -> Path | None:
-    candidates = [
-        Path("/Applications/Stata/StataMP.app/Contents/MacOS/stata-mp"),
-        Path("/Applications/Stata/StataMP.app/Contents/MacOS/StataMP"),
-        Path("/Applications/Stata/StataSE.app/Contents/MacOS/stata-se"),
-        Path("/Applications/Stata/Stata.app/Contents/MacOS/Stata"),
-    ]
-    for path in candidates:
-        if path.exists():
-            return path
-    return None
+    return find_stata()
 
 
 def detect_imputation_packages() -> dict:

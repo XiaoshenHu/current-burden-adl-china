@@ -3,12 +3,17 @@ from __future__ import annotations
 
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import charls_raw_dir, project_root
+
 import numpy as np
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parents[1]
-RAW = ROOT / "derived" / "raw_extracts"
+ROOT = project_root()
+RAW = charls_raw_dir()
 RAW_ORIG = RAW / "orig_life_history"
 DERIVED = ROOT / "derived"
 
@@ -159,6 +164,7 @@ def midpoint_date(start: pd.Timestamp, end: pd.Timestamp) -> pd.Timestamp:
 
 
 def main() -> None:
+    DERIVED.mkdir(parents=True, exist_ok=True)
     d_cols = [
         "ID", "inw1", "ragender", "rabyear", "raeducl", "r1rural2",
         "ramomeducl", "radadeducl", "ramomoccup_c", "radadoccup_c",

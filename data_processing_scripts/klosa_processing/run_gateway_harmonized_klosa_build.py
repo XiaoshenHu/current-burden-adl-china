@@ -7,16 +7,17 @@ import subprocess
 import zipfile
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import configured_path, find_stata, gateway_do_file, klosa_data_root, klosa_raw_dir, project_root
 
-PROJECT_ROOT = Path(
-    "/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging"
-)
-DATA_ROOT = Path(
-    "/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/DATA/public_databases/klosa"
-)
-RAW_DIR = DATA_ROOT / "KLoSA 1-9th wave (STATA)"
-ORIGINAL_DO = DATA_ROOT / "bukpmcwp.do"
-BUILD_ROOT = Path.home() / "klosa_gateway_build_vf_20260327"
+
+PROJECT_ROOT = project_root()
+DATA_ROOT = klosa_data_root()
+RAW_DIR = klosa_raw_dir()
+ORIGINAL_DO = gateway_do_file()
+BUILD_ROOT = configured_path("ADL_GATEWAY_BUILD_ROOT", PROJECT_ROOT / "gateway_build")
 INPUT_DIR = BUILD_ROOT / "input"
 OUTPUT_DIR = BUILD_ROOT / "output"
 LOG_DIR = BUILD_ROOT / "logs"
@@ -27,16 +28,10 @@ PROJECT_RESULT_DIR = PROJECT_ROOT / "results" / "klosa_external_validation" / "g
 
 
 def detect_stata_binary() -> Path:
-    candidates = [
-        Path("/Applications/Stata/StataMP.app/Contents/MacOS/stata-mp"),
-        Path("/Applications/Stata/StataMP.app/Contents/MacOS/StataMP"),
-        Path("/Applications/Stata/StataSE.app/Contents/MacOS/stata-se"),
-        Path("/Applications/Stata/Stata.app/Contents/MacOS/Stata"),
-    ]
-    for path in candidates:
-        if path.exists():
-            return path
-    raise FileNotFoundError("No local Stata executable was found.")
+    binary = find_stata()
+    if binary is None:
+        raise FileNotFoundError("No Stata executable found. Set STATA_BIN or add Stata to PATH.")
+    return binary
 
 
 def ensure_clean_dirs() -> None:

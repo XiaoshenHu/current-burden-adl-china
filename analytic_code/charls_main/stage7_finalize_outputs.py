@@ -4,9 +4,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 import pandas as pd
 
-from stage7_cluster_robustness import (
+from analytic_code.model_validation_and_representation.stage7_cluster_robustness import (
     RESULTS_DIR,
     SEED,
     build_plots,

@@ -1,5 +1,28 @@
 # CHARLS landmark prognostic stratification study: reproducibility release package
 
+## Reproducibility status
+
+Portable paths, repository imports, a pinned requirements file and stage-level
+commands are provided. **Full statistical reruns remain blocked** by restricted
+data and missing original CHARLS source/input dependencies; no statistical
+results were regenerated in this repair. All released locked assets are unchanged.
+
+- [Installation and path configuration](reproducibility/environment_requirements.md)
+- [Execution commands and input/output relationships](reproducibility/execution_order.md)
+- [Missing source and verification boundaries](reproducibility/missing_source_audit.md)
+- [Reproducibility guide](reproducibility/reproducibility_guide.md)
+
+After installation, start with:
+
+```bash
+python -m unittest discover -s tests -v
+python reproducibility/run.py --init-workspace
+python reproducibility/run.py --check all
+```
+
+The availability check intentionally exits with code 1 for missing inputs or
+sources. This is expected for the public data-free checkout.
+
 ## Project title
 
 Current multidomain burden dominates short-horizon ADL disability prediction, while pre-landmark multidomain change provides modest incremental refinement in middle-aged and older adults: a nationwide longitudinal CHARLS prognostic stratification study

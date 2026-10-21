@@ -6,6 +6,10 @@ import warnings
 from datetime import datetime
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import project_root
+
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
@@ -15,12 +19,11 @@ from sklearn.model_selection import StratifiedKFold
 
 SEED = 20260325
 
-ROOT = Path("/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging")
+ROOT = project_root()
 OUTDIR = ROOT / "results" / "stageR_rule"
 RESULTS_INDEX = ROOT / "RESULTS_INDEX.md"
 
-sys.path.insert(0, str(ROOT / "scripts" / "stage4_missing_selection"))
-import stage4_missing_selection as s4  # noqa: E402
+from analytic_code.model_validation_and_representation import stage4_missing_selection as s4  # noqa: E402
 
 
 def fmt3(x: float | int | None) -> str:

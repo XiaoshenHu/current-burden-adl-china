@@ -2,6 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import harmonized_klosa_path, project_root
+
 import numpy as np
 import pandas as pd
 from sklearn.metrics import brier_score_loss, roc_auc_score
@@ -9,12 +14,10 @@ from sklearn.model_selection import KFold
 import statsmodels.api as sm
 
 
-PROJECT_ROOT = Path(
-    "/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging"
-)
+PROJECT_ROOT = project_root()
 RESULTS_DIR = PROJECT_ROOT / "results" / "klosa_external_validation"
 HARMONIZED_DIR = RESULTS_DIR / "gateway_harmonized_build"
-HARMONIZED_PATH = HARMONIZED_DIR / "GH_KLoSA_f.dta"
+HARMONIZED_PATH = harmonized_klosa_path()
 
 WAVE34_COLS = [
     "pid",

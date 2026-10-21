@@ -4,6 +4,11 @@ from __future__ import annotations
 import warnings
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import charls_raw_dir, project_root
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -16,11 +21,11 @@ from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = project_root()
 DERIVED = ROOT / "derived"
 OUTPUTS = ROOT / "outputs"
 DOCS = ROOT / "docs"
-RAW_D = DERIVED / "raw_extracts" / "H_CHARLS_D_Data.dta"
+RAW_D = charls_raw_dir() / "H_CHARLS_D_Data.dta"
 
 
 def zfill_id(series: pd.Series) -> pd.Series:

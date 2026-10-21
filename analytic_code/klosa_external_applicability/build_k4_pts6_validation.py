@@ -1,17 +1,18 @@
 from __future__ import annotations
 
 from pathlib import Path
+
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import klosa_raw_dir, project_root
 import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
 
-PROJECT_ROOT = Path(
-    "/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging"
-)
-RAW_DIR = Path(
-    "/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/DATA/public_databases/klosa/KLoSA 1-9th wave (STATA)"
-)
+PROJECT_ROOT = project_root()
+RAW_DIR = klosa_raw_dir()
 RESULTS_DIR = PROJECT_ROOT / "results" / "klosa_external_validation"
 
 

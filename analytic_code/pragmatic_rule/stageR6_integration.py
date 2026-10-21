@@ -4,12 +4,17 @@ import json
 from datetime import datetime
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import project_root
+
 import pandas as pd
 
 
 SEED = 20260325
 
-ROOT = Path("/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging")
+ROOT = project_root()
 OUTDIR = ROOT / "results" / "stageR_rule"
 RESULTS_INDEX = ROOT / "RESULTS_INDEX.md"
 LIMITATIONS = ROOT / "LIMITATIONS_OF_REANALYSIS.md"

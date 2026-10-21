@@ -7,6 +7,11 @@ import warnings
 from datetime import datetime
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import charls_raw_dir, project_root, require_reinforcement
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -19,7 +24,7 @@ from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
 from statsmodels.tools.sm_exceptions import ConvergenceWarning as SMConvergenceWarning
 
-from run_landmark_time_split_analysis import (
+from analytic_code.charls_main.run_landmark_time_split_analysis import (
     build_base_dataset,
     build_pooled_person_period,
     burden_order_score,
@@ -29,21 +34,11 @@ from run_landmark_time_split_analysis import (
     plot_profiles,
     prepare_landmark_outcomes,
 )
-from run_submission_grade_reinforcement import (
-    cox_table,
-    draw_flowchart,
-    fit_cox,
-    make_baseline_table,
-    make_ipw_weights,
-    ph_diagnostics,
-    plot_schoenfeld,
-    spline_curve,
-)
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = project_root()
 DERIVED = ROOT / "derived"
-RAW_D = DERIVED / "raw_extracts" / "H_CHARLS_D_Data.dta"
+RAW_D = charls_raw_dir() / "H_CHARLS_D_Data.dta"
 RERUNS = ROOT / "reruns"
 RERUN_ID = "2026-03-19_landmark_primary_rerun_v1"
 RERUN_DIR = RERUNS / RERUN_ID
@@ -396,6 +391,13 @@ def fit_pooled_discrete_time(df: pd.DataFrame, traj2: pd.DataFrame) -> tuple[pd.
 
 
 def fit_full_followup_cox_supplements(analytic: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    reinforcement = require_reinforcement()
+    cox_table = reinforcement.cox_table
+    fit_cox = reinforcement.fit_cox
+    make_ipw_weights = reinforcement.make_ipw_weights
+    ph_diagnostics = reinforcement.ph_diagnostics
+    plot_schoenfeld = reinforcement.plot_schoenfeld
+    spline_curve = reinforcement.spline_curve
     results: dict[str, pd.DataFrame] = {}
     main_cox = analytic.dropna(subset=["survival_time_years", "death_event", "adversity_score_scaled", *BASE_COVARS]).copy()
 
@@ -622,6 +624,9 @@ def write_docs(flow: dict[str, int], registry: pd.DataFrame, landmark_outputs: d
 
 
 def main() -> None:
+    reinforcement = require_reinforcement()
+    draw_flowchart = reinforcement.draw_flowchart
+    make_baseline_table = reinforcement.make_baseline_table
     warnings.filterwarnings("ignore", category=RuntimeWarning)
     warnings.filterwarnings("ignore", category=ConvergenceWarning)
     warnings.filterwarnings("ignore", category=SMConvergenceWarning)
