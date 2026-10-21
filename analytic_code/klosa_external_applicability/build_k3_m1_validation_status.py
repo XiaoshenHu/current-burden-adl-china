@@ -2,9 +2,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 import pandas as pd
 
-from harmonized_wave34_m1_utils import (
+from data_processing_scripts.klosa_processing.harmonized_wave34_m1_utils import (
     RESULTS_DIR,
     make_risk_group_table,
     run_structural_m1_oof,

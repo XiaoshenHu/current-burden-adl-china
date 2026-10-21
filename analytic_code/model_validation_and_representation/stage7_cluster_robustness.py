@@ -5,6 +5,11 @@ import json
 import random
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import expanded_rerun_root, project_root
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -14,8 +19,8 @@ from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
 
 
-PROJECT_ROOT = Path("/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging")
-PHENO_DIR = PROJECT_ROOT / "rerun_risk_stratification_expanded_v2_20260323" / "03_phenotype_derivation"
+PROJECT_ROOT = project_root()
+PHENO_DIR = expanded_rerun_root() / "03_phenotype_derivation"
 RESULTS_DIR = PROJECT_ROOT / "results" / "stage7_cluster_robustness"
 LOGS_DIR = PROJECT_ROOT / "logs" / "stage7_cluster_robustness"
 RESULTS_INDEX = PROJECT_ROOT / "RESULTS_INDEX.md"

@@ -1,0 +1,33 @@
+{
+  "base_commit": "73ba8f9caaaa9abe78904954fde031847ce551a2",
+  "files": {
+    "locked_result_assets/charls/adjusted_absolute_risk_by_phenotype.csv": "aee42bde70583dc59aeb4a51caf689a5e522054efd26d81302f330206817472e",
+    "locked_result_assets/charls/current_association_results_locked.csv": "7485fe6af4b73df992de27b479debb2e3882ea1e000f3c962f8cfd245a7cd9d7",
+    "locked_result_assets/charls/emerging_beyond_burden_models.csv": "ead47eb80465902a9a65d9b1fcff52a3180b741b1d3b91897b3ed1cca06ef28d",
+    "locked_result_assets/charls/m1_calibration_metrics.csv": "2073a1690ae7cffc7228f976a78d4387341d5d7308ce636aea4af9698b58b0ff",
+    "locked_result_assets/charls/m1_observed_vs_predicted_deciles.csv": "4ad950e4fdd2f0d5c529019cff95f303bd9f3c89277e9479e76034401ddd3895",
+    "locked_result_assets/charls/nested_validation_performance.csv": "93db3b4cc404374ecf41662fa68ec00e699a9f7b477f2de310cb8d7973bf5497",
+    "locked_result_assets/charls/nested_vs_original_comparison.csv": "e44819fb81a72b4d056cf15a5e7831c8d941fc324b9c7c31ffbf08638d82ce7b",
+    "locked_result_assets/charls/phenotype_profile_locked.csv": "520e8f73cae98eed0392fd99b063a7232c7397b1b298d79b8f3967b0fca2674f",
+    "locked_result_assets/charls/risk_stratification_deciles.csv": "72bd8fc7efbfe949b99f0b74e166ebc9c3bb0c096c48a9b98411939e7b0b3eb1",
+    "locked_result_assets/charls/risk_stratification_quintiles.csv": "4b7098f7fdb8f71ba775f50bf10ee066596c17e0c2060ccafa6ed18c2aee7e5e",
+    "locked_result_assets/charls/sample_flow_locked.csv": "080640c10eb677caf82b4a12207f7f4cea39a48622781f22609b0cdf967ef428",
+    "locked_result_assets/context/LIMITATIONS_OF_REANALYSIS.md": "8dac387a4c4da121a1a1fb1ee54d23ef68126376cabf08f90a5ea98d199b19c1",
+    "locked_result_assets/context/RESULTS_INDEX.md": "78a72101597353bc656bf814c4a1b9b466b2e36acbdfa49a91a7ff999b2f26c2",
+    "locked_result_assets/context/reanalysis_summary.md": "af2996e29a97210786b0b774ecbef8a8a02aa7c7ee0c4096f722f9b312a710ef",
+    "locked_result_assets/context/revised_study_positioning.md": "bc756d63c1e1f47faf1f93b4bed4b73a362f569a9988e4bd76ac6954324ee6d4",
+    "locked_result_assets/klosa_external_applicability/klosa_M1_calibration.csv": "d00f4c6525387635d1612ba670f001cff5bd46c1efe51d518c5309a442e6c2cd",
+    "locked_result_assets/klosa_external_applicability/klosa_M1_performance.csv": "26ca3dc1fc6cb5369c6ea37a3dc9842bb421587d7b93c8e242317613d2648648",
+    "locked_result_assets/klosa_external_applicability/klosa_M1_risk_stratification.csv": "ff469d145e442f5da9584138d8b5f7b4d6e745c85d06a4688a457941bd50a9f5",
+    "locked_result_assets/klosa_external_applicability/klosa_M1_validation_summary.md": "512e6f667e607f308720841a7174d19611e223d5c165dbfc4ef3633d2ad6b5e6",
+    "locked_result_assets/klosa_external_applicability/klosa_PTS6_group_characteristics.csv": "8363587561c0e51c528aa03a15155f64edeb4878b87b84ab0a3fea8078462d7f",
+    "locked_result_assets/klosa_external_applicability/klosa_PTS6_performance.csv": "db4856815dc19a865fcbb1314247a655408cc59804f6690790f820e078db4eed",
+    "locked_result_assets/klosa_external_applicability/klosa_PTS6_validation_summary.md": "45afe4753502ff71f6b0aee365192bf5f5a39fb6ea2613dfa7ad937f9a82e30e",
+    "locked_result_assets/klosa_external_applicability/klosa_external_validation_summary.md": "a253cfebfaefd3c1070fa55e9ac3683c3af4189572fb1beb722b7a84cc3f96b2",
+    "locked_result_assets/klosa_external_applicability/klosa_sample_flow.csv": "bc2ec2a2b112535ca3a88918b8d2201705e2760a7f2f84af02a8ff11a8c53d27",
+    "locked_result_assets/klosa_external_applicability/klosa_validation_cohort_definition.md": "e7c3fa55ef6b6db2351a88e607ea49d5827b8eab687073b32195e8e60312bdec",
+    "locked_result_assets/pragmatic_rule/r4_operational_high_risk_profile.csv": "52075099adb92b9c6c41019b394d089afec8093ca26ee6d11cdfadf6e1b0765e",
+    "locked_result_assets/pragmatic_rule/r5_internal_validation.csv": "c5ae09ae5c53e160daf22b151243ac7ce18f4b63c6396bdac427c12f1a337008",
+    "locked_result_assets/pragmatic_rule/r6_pragmatic_rule_summary.md": "07d0945ce1e0007f1015065ab950d6ece51be05540d1c68ea62417d866e22276"
+  }
+}

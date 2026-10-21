@@ -1,0 +1,13 @@
+# Restricted inputs and regenerated files. Locked aggregate assets remain tracked.
+/work/
+/.venv/
+__pycache__/
+*.py[cod]
+/.env
+/derived/
+/results/
+/outputs/
+/docs/
+/logs/
+/reruns/
+/rerun_risk_stratification_expanded_v2_20260323/

@@ -5,6 +5,11 @@ import json
 import random
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import expanded_rerun_root, project_root
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -17,8 +22,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-RERUN_ROOT = PROJECT_ROOT / "rerun_risk_stratification_expanded_v2_20260323"
+PROJECT_ROOT = project_root()
+RERUN_ROOT = expanded_rerun_root()
 RESULTS_DIR = PROJECT_ROOT / "results" / "stage2_level_change"
 LOGS_DIR = PROJECT_ROOT / "logs" / "stage2_level_change"
 

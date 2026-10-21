@@ -4,11 +4,16 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import charls_raw_dir, project_root
+
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parents[1]
-RAW = ROOT / "derived" / "raw_extracts"
+ROOT = project_root()
+RAW = charls_raw_dir()
 OUT = ROOT / "derived"
 
 FILES = {
@@ -54,6 +59,7 @@ def search_columns(columns: list[str], patterns: list[str]) -> list[str]:
 
 
 def main() -> None:
+    OUT.mkdir(parents=True, exist_ok=True)
     inventory: dict[str, dict[str, list[str]]] = {}
     for tag, path in FILES.items():
         cols = read_columns(path)

@@ -1,0 +1,742 @@
+{
+  "schema_version": 1,
+  "notes": "Availability checks only; depends_on documents provenance and is not auto-executed. IO expressions and dynamic names are listed in io_inventory.md.",
+  "stages": {
+    "charls-inventory": {
+      "description": "Optional CHARLS variable inventory",
+      "script": "data_processing_scripts/charls_processing/build_charls_variable_inventory.py",
+      "depends_on": [],
+      "inputs": [
+        "charls_raw:H_CHARLS_D_Data.dta",
+        "charls_raw:H_CHARLS_LH_a.dta",
+        "charls_raw:H_CHARLS_EOL_a.dta"
+      ],
+      "output_directory": "work:derived",
+      "output_files": [
+        "work:derived/charls_variable_inventory.json",
+        "work:derived/charls_variable_inventory.md"
+      ]
+    },
+    "charls-prepare": {
+      "description": "Build legacy CHARLS analytic base",
+      "script": "data_processing_scripts/charls_processing/prepare_life_course_aging_dataset.py",
+      "depends_on": [],
+      "inputs": [
+        "charls_raw:H_CHARLS_D_Data.dta",
+        "charls_raw:H_CHARLS_EOL_a.dta",
+        "charls_raw:orig_life_history/Health_History.dta",
+        "charls_raw:orig_life_history/Family_Information.dta"
+      ],
+      "output_directory": "work:derived",
+      "note": "This does not generate the expanded v2 locked inputs used by stages 1-10.",
+      "output_files": [
+        "work:derived/charls_analytic_base.csv",
+        "work:derived/charls_analytic_base_summary.md"
+      ]
+    },
+    "charls-legacy-time-split": {
+      "description": "Legacy landmark and time-split analyses",
+      "script": "analytic_code/charls_main/run_landmark_time_split_analysis.py",
+      "depends_on": [
+        "charls-prepare"
+      ],
+      "inputs": [
+        "work:derived/charls_analytic_base.csv",
+        "charls_raw:H_CHARLS_D_Data.dta"
+      ],
+      "output_directory": "work:outputs",
+      "note": "Also writes work/derived trajectory files and work/docs; not the expanded v2 producer.",
+      "output_files": [
+        "work:outputs/figure_landmark_w1_w3_bootstrap_stability.png",
+        "work:outputs/figure_landmark_w1_w3_crude_event_rates.png",
+        "work:outputs/figure_landmark_w1_w3_k_comparison.png",
+        "work:outputs/figure_landmark_w1_w3_trajectory_profiles.png",
+        "work:outputs/tableS_landmark_flow_counts.csv",
+        "work:outputs/tableS_landmark_w1_w2_k_comparison.csv",
+        "work:outputs/tableS_landmark_w1_w2_pooled_discrete_death.csv",
+        "work:outputs/tableS_landmark_w1_w2_pooled_joint_discrete_death.csv",
+        "work:outputs/tableS_landmark_w1_w3_adl_or_death.csv",
+        "work:outputs/tableS_landmark_w1_w3_attenuation.csv",
+        "work:outputs/tableS_landmark_w1_w3_bootstrap_stability.csv",
+        "work:outputs/tableS_landmark_w1_w3_crude_event_rates.csv",
+        "work:outputs/tableS_landmark_w1_w3_k_comparison.csv",
+        "work:outputs/tableS_landmark_w1_w3_posterior_summary.csv",
+        "work:outputs/tableS_landmark_w1_w3_trajectory_profiles.csv",
+        "work:outputs/table_landmark_w1_w3_discrete_death.csv",
+        "work:outputs/table_landmark_w1_w3_incident_adl.csv",
+        "work:outputs/table_landmark_w1_w3_joint_discrete_death.csv",
+        "work:outputs/table_landmark_w1_w3_trajectory_association.csv",
+        "work:derived/charls_trajectory_features_landmark_w1_w2.csv",
+        "work:derived/charls_trajectory_features_landmark_w1_w3.csv",
+        "work:docs/landmark_discrete_time_methods.md",
+        "work:docs/round4_landmark_discrete_time_and_trajectory_robustness.md"
+      ],
+      "additional_output_directories": [
+        "work:derived",
+        "work:docs"
+      ]
+    },
+    "charls-legacy-master": {
+      "description": "Legacy master (original reinforcement source missing)",
+      "script": "analytic_code/charls_main/run_landmark_primary_rerun_master.py",
+      "depends_on": [
+        "charls-prepare"
+      ],
+      "inputs": [
+        "work:derived/charls_analytic_base.csv",
+        "charls_raw:H_CHARLS_D_Data.dta"
+      ],
+      "output_directory": "work:reruns/2026-03-19_landmark_primary_rerun_v1",
+      "source_modules": [
+        "analytic_code.charls_main.run_submission_grade_reinforcement"
+      ],
+      "note": "Blocked until the original reinforcement module is restored. This legacy master does not generate the expanded v2 tree.",
+      "output_files": [
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/analysis_manifest.json",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/derived/charls_trajectory_features_landmark_w1_w2.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/derived/charls_trajectory_features_landmark_w1_w3.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/docs/methods_note.md",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/docs/results_memo.md",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/output_registry.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/figure1_landmark_flowchart.png",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/figure2_landmark_trajectory_profiles.png",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/figure3_landmark_crude_event_rates.png",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/figureS1_spline_mortality_curve.png",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/figureS2_main_cox_schoenfeld.png",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/figureS3_landmark_k_comparison.png",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/figureS4_landmark_bootstrap_stability.png",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/table1_baseline_by_adversity_category.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/table2_landmark_trajectory_association.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/table3_landmark_incident_adl.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/table4a_landmark_discrete_death.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/table4b_landmark_joint_discrete_death.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS10_full_followup_main_cox.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS11_subgroup_mortality_cox.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS12_interaction_tests.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS13_ipw_main_cox.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS14_ipw_weight_summary.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS15_adversity_basic_cox.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS16_refined_plus_baseline_health_cox.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS17_cox_ph_diagnostics.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS18_landmark_attenuation.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS19_landmark_crude_event_rates.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS1_flow_counts.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS20_spline_mortality_curve.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS2_baseline_by_trajectory_group.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS3_landmark_trajectory_profiles.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS4_landmark_k_comparison.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS5_landmark_posterior_summary.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS6_landmark_bootstrap_stability.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS7_landmark_adl_or_death.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS8_pooled_discrete_death.csv",
+        "work:reruns/2026-03-19_landmark_primary_rerun_v1/outputs/tableS9_pooled_joint_discrete_death.csv"
+      ]
+    },
+    "stage1": {
+      "description": "Audit and lock expanded v2 outputs",
+      "script": "analytic_code/model_validation_and_representation/stage1_baseline_lock.py",
+      "depends_on": [],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv",
+        "expanded:07_tables_figures/table_sample_flow.csv",
+        "expanded:07_tables_figures/table_prediction_performance.csv",
+        "expanded:07_tables_figures/table_membership_model.csv",
+        "expanded:07_tables_figures/table_primary_incident_adl.csv",
+        "expanded:07_tables_figures/table_composite_outcome.csv",
+        "expanded:07_tables_figures/table_post_landmark_mortality.csv",
+        "expanded:04_primary_models/primary_incident_adl_crude_risk.csv",
+        "expanded:03_phenotype_derivation/class_sizes.csv"
+      ],
+      "output_directory": "work:results/stage1_baseline_lock",
+      "note": "Expanded v2 participant files and aggregate reference tables require the unreleased producer or original internal package.",
+      "output_files": [
+        "work:results/stage1_baseline_lock/baseline_lock_summary.md",
+        "work:results/stage1_baseline_lock/current_association_results_locked.csv",
+        "work:results/stage1_baseline_lock/current_model_performance_locked.csv",
+        "work:results/stage1_baseline_lock/current_pipeline_notes.md",
+        "work:results/stage1_baseline_lock/phenotype_profile_locked.csv",
+        "work:results/stage1_baseline_lock/sample_flow_locked.csv",
+        "work:results/stage1_baseline_lock/stage1_run_metadata.json"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage1_baseline_lock"
+      ]
+    },
+    "stage2": {
+      "description": "Current-level and pre-landmark change models",
+      "script": "analytic_code/model_validation_and_representation/stage2_level_change.py",
+      "depends_on": [
+        "stage1"
+      ],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv"
+      ],
+      "output_directory": "work:results/stage2_level_change",
+      "output_files": [
+        "work:results/stage2_level_change/level_change_dca_outputs.csv",
+        "work:results/stage2_level_change/level_change_features.csv",
+        "work:results/stage2_level_change/level_change_model_coefficients.csv",
+        "work:results/stage2_level_change/level_change_model_comparison.csv",
+        "work:results/stage2_level_change/level_change_oof_predictions.csv",
+        "work:results/stage2_level_change/level_change_plots.pdf",
+        "work:results/stage2_level_change/level_change_summary.md",
+        "work:results/stage2_level_change/stage2_pipeline_notes.md",
+        "work:results/stage2_level_change/stage2_run_metadata.json"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage2_level_change"
+      ]
+    },
+    "stage3": {
+      "description": "Nested model validation",
+      "script": "analytic_code/model_validation_and_representation/stage3_nested_validation.py",
+      "depends_on": [
+        "stage2"
+      ],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "work:results/stage2_level_change/level_change_features.csv",
+        "work:results/stage2_level_change/level_change_model_comparison.csv"
+      ],
+      "output_directory": "work:results/stage3_nested_validation",
+      "output_files": [
+        "work:results/stage3_nested_validation/calibration_plots.pdf",
+        "work:results/stage3_nested_validation/decision_curves.pdf",
+        "work:results/stage3_nested_validation/nested_validation_decision_curve_data.csv",
+        "work:results/stage3_nested_validation/nested_validation_fold_tuning.csv",
+        "work:results/stage3_nested_validation/nested_validation_oof_predictions.csv",
+        "work:results/stage3_nested_validation/nested_validation_performance.csv",
+        "work:results/stage3_nested_validation/nested_validation_run_metadata.json",
+        "work:results/stage3_nested_validation/nested_validation_summary.md",
+        "work:results/stage3_nested_validation/nested_vs_original_comparison.csv"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage3_nested_validation"
+      ]
+    },
+    "stage4": {
+      "description": "Missingness, imputation and selection analyses",
+      "script": "analytic_code/model_validation_and_representation/stage4_missing_selection.py",
+      "depends_on": [
+        "stage1"
+      ],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv"
+      ],
+      "output_directory": "work:results/stage4_missing_selection",
+      "output_files": [
+        "work:results/stage4_missing_selection/cc_vs_mi_vs_ipw_vs_miipw.csv",
+        "work:results/stage4_missing_selection/included_vs_excluded_smd.csv",
+        "work:results/stage4_missing_selection/missing_selection_summary.md",
+        "work:results/stage4_missing_selection/missingness_plots.pdf",
+        "work:results/stage4_missing_selection/missingness_summary.csv",
+        "work:results/stage4_missing_selection/stage4_run_metadata.json",
+        "work:results/stage4_missing_selection/weight_diagnostics.csv"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage4_missing_selection"
+      ]
+    },
+    "stage5": {
+      "description": "Phenotype associations and adjusted risks",
+      "script": "analytic_code/model_validation_and_representation/stage5_emerging_beyond_burden.py",
+      "depends_on": [
+        "stage2"
+      ],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stage5_emerging_beyond_burden",
+      "output_files": [
+        "work:results/stage5_emerging_beyond_burden/adjusted_absolute_risk_by_phenotype.csv",
+        "work:results/stage5_emerging_beyond_burden/adjusted_risk_plot.pdf",
+        "work:results/stage5_emerging_beyond_burden/emerging_beyond_burden_models.csv",
+        "work:results/stage5_emerging_beyond_burden/emerging_beyond_burden_summary.md",
+        "work:results/stage5_emerging_beyond_burden/emerging_pairwise_contrasts.csv",
+        "work:results/stage5_emerging_beyond_burden/emerging_within_m1_risk_strata.csv",
+        "work:results/stage5_emerging_beyond_burden/stage5_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage5_emerging_beyond_burden"
+      ]
+    },
+    "stage6": {
+      "description": "Compare continuous and phenotype representations",
+      "script": "analytic_code/model_validation_and_representation/stage6_representation.py",
+      "depends_on": [
+        "stage2",
+        "stage3",
+        "stage5"
+      ],
+      "inputs": [
+        "work:results/stage2_level_change/level_change_features.csv",
+        "work:results/stage2_level_change/level_change_model_comparison.csv",
+        "work:results/stage3_nested_validation/nested_validation_performance.csv",
+        "work:results/stage5_emerging_beyond_burden/adjusted_absolute_risk_by_phenotype.csv",
+        "work:results/stage5_emerging_beyond_burden/emerging_pairwise_contrasts.csv",
+        "expanded:07_tables_figures/table_prediction_performance.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stage6_representation",
+      "output_files": [
+        "work:results/stage6_representation/representation_comparison.csv",
+        "work:results/stage6_representation/representation_plots.pdf",
+        "work:results/stage6_representation/representation_summary.md",
+        "work:results/stage6_representation/stage6_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage6_representation"
+      ]
+    },
+    "stage7": {
+      "description": "GMM specification and stability analyses",
+      "script": "analytic_code/model_validation_and_representation/stage7_cluster_robustness.py",
+      "depends_on": [
+        "stage1"
+      ],
+      "inputs": [
+        "expanded:03_phenotype_derivation/trajectory_feature_matrix.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv",
+        "expanded:03_phenotype_derivation/posterior_probabilities.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stage7_cluster_robustness",
+      "output_files": [
+        "work:results/stage7_cluster_robustness/cluster_robustness_report.md",
+        "work:results/stage7_cluster_robustness/cluster_stability_metrics.csv",
+        "work:results/stage7_cluster_robustness/cluster_stability_plots.pdf",
+        "work:results/stage7_cluster_robustness/gmm_specification_comparison.csv",
+        "work:results/stage7_cluster_robustness/posterior_distribution_summary.csv",
+        "work:results/stage7_cluster_robustness/stage7_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage7_cluster_robustness"
+      ]
+    },
+    "stage7-finalize": {
+      "description": "Optional re-render of existing stage7 outputs",
+      "script": "analytic_code/charls_main/stage7_finalize_outputs.py",
+      "depends_on": [
+        "stage7"
+      ],
+      "inputs": [
+        "work:results/stage7_cluster_robustness/gmm_specification_comparison.csv",
+        "work:results/stage7_cluster_robustness/cluster_stability_metrics.csv",
+        "work:results/stage7_cluster_robustness/posterior_distribution_summary.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stage7_cluster_robustness",
+      "note": "Optional report/plot finalization; reuses existing CSVs and overwrites stage7 metadata as in the original script.",
+      "output_files": [
+        "work:results/stage7_cluster_robustness/stage7_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ]
+    },
+    "stage8": {
+      "description": "Domain ablation and continuous contributions",
+      "script": "analytic_code/model_validation_and_representation/stage8_domain_contribution.py",
+      "depends_on": [
+        "stage2"
+      ],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv",
+        "expanded:03_phenotype_derivation/trajectory_feature_matrix.csv",
+        "work:results/stage2_level_change/level_change_features.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stage8_domain_contribution",
+      "output_files": [
+        "work:results/stage8_domain_contribution/continuous_domain_contributions.csv",
+        "work:results/stage8_domain_contribution/domain_ablation_results.csv",
+        "work:results/stage8_domain_contribution/domain_contribution_plots.pdf",
+        "work:results/stage8_domain_contribution/domain_contribution_summary.md",
+        "work:results/stage8_domain_contribution/stage8_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage8_domain_contribution"
+      ]
+    },
+    "stage9": {
+      "description": "Multinomial competing-status analysis",
+      "script": "analytic_code/charls_main/stage9_outcome_structure.py",
+      "depends_on": [
+        "stage1"
+      ],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stage9_outcome_structure",
+      "output_files": [
+        "work:results/stage9_outcome_structure/multinomial_competing_status.csv",
+        "work:results/stage9_outcome_structure/outcome_structure_plots.pdf",
+        "work:results/stage9_outcome_structure/outcome_structure_summary.md",
+        "work:results/stage9_outcome_structure/stage9_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage9_outcome_structure"
+      ]
+    },
+    "stage10": {
+      "description": "Older-adult and measurement sensitivity",
+      "script": "analytic_code/model_validation_and_representation/stage10_targeted_sensitivity.py",
+      "depends_on": [
+        "stage2"
+      ],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stage10_targeted_sensitivity",
+      "output_files": [
+        "work:results/stage10_targeted_sensitivity/measurement_robustness.csv",
+        "work:results/stage10_targeted_sensitivity/older_adult_sensitivity.csv",
+        "work:results/stage10_targeted_sensitivity/stage10_run_metadata.json",
+        "work:results/stage10_targeted_sensitivity/targeted_sensitivity_plots.pdf",
+        "work:results/stage10_targeted_sensitivity/targeted_sensitivity_summary.md",
+        "work:RESULTS_INDEX.md"
+      ],
+      "additional_output_directories": [
+        "work:logs/stage10_targeted_sensitivity"
+      ]
+    },
+    "m1-risk": {
+      "description": "M1 out-of-fold risk stratification",
+      "script": "analytic_code/model_validation_and_representation/stageM1_risk_strat.py",
+      "depends_on": [
+        "stage2"
+      ],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stageM1_risk_strat",
+      "output_files": [
+        "work:results/stageM1_risk_strat/risk_stratification_deciles.csv",
+        "work:results/stageM1_risk_strat/risk_stratification_plot.pdf",
+        "work:results/stageM1_risk_strat/risk_stratification_quintiles.csv",
+        "work:results/stageM1_risk_strat/risk_stratification_summary.md",
+        "work:results/stageM1_risk_strat/stageM1_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ]
+    },
+    "m1-calibration": {
+      "description": "M1 out-of-fold calibration",
+      "script": "analytic_code/model_validation_and_representation/stageM1_calibration.py",
+      "depends_on": [
+        "stage2"
+      ],
+      "inputs": [
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stageM1_calibration",
+      "output_files": [
+        "work:results/stageM1_calibration/m1_calibration_metrics.csv",
+        "work:results/stageM1_calibration/m1_calibration_plot.pdf",
+        "work:results/stageM1_calibration/m1_calibration_summary.md",
+        "work:results/stageM1_calibration/m1_observed_vs_predicted_deciles.csv",
+        "work:results/stageM1_calibration/stageM1_calibration_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ]
+    },
+    "r1": {
+      "description": "Core feature stability summary",
+      "script": "analytic_code/pragmatic_rule/stageR1_m2_core_features.py",
+      "depends_on": [
+        "stage2",
+        "stage3",
+        "stage4",
+        "stage8",
+        "stage10"
+      ],
+      "inputs": [
+        "work:results/stage2_level_change/level_change_model_coefficients.csv",
+        "work:results/stage3_nested_validation/nested_validation_performance.csv",
+        "work:results/stage4_missing_selection/cc_vs_mi_vs_ipw_vs_miipw.csv",
+        "work:results/stage8_domain_contribution/continuous_domain_contributions.csv",
+        "work:results/stage10_targeted_sensitivity/measurement_robustness.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stageR_rule",
+      "output_files": [
+        "work:results/stageR_rule/r1_feature_stability_summary.md",
+        "work:results/stageR_rule/r1_m2_core_features.csv",
+        "work:results/stageR_rule/stageR1_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ]
+    },
+    "r2": {
+      "description": "Candidate pragmatic models",
+      "script": "analytic_code/pragmatic_rule/stageR2_candidate_models.py",
+      "depends_on": [
+        "r1"
+      ],
+      "inputs": [
+        "work:results/stage2_level_change/level_change_features.csv",
+        "work:results/stageR_rule/r1_m2_core_features.csv",
+        "work:results/stage3_nested_validation/nested_validation_performance.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stageR_rule",
+      "output_files": [
+        "work:results/stageR_rule/r2_candidate_models.csv",
+        "work:results/stageR_rule/r2_candidate_rule_definitions.md",
+        "work:results/stageR_rule/stageR2_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ]
+    },
+    "r3": {
+      "description": "Model and rule comparison",
+      "script": "analytic_code/pragmatic_rule/stageR3_model_rule_comparison.py",
+      "depends_on": [
+        "r2"
+      ],
+      "inputs": [
+        "work:results/stage2_level_change/level_change_features.csv",
+        "work:results/stageR_rule/r2_candidate_models.csv",
+        "work:results/stageR_rule/stageR2_run_metadata.json",
+        "work:results/stage3_nested_validation/nested_validation_performance.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stageR_rule",
+      "output_files": [
+        "work:results/stageR_rule/r3_high_risk_group_characteristics.csv",
+        "work:results/stageR_rule/r3_model_rule_comparison.csv",
+        "work:results/stageR_rule/r3_performance_plots.pdf",
+        "work:results/stageR_rule/stageR3_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ]
+    },
+    "r4": {
+      "description": "Operational high-risk profiles",
+      "script": "analytic_code/pragmatic_rule/stageR4_pre_disability_relevance.py",
+      "depends_on": [
+        "r3"
+      ],
+      "inputs": [
+        "work:results/stage2_level_change/level_change_features.csv",
+        "work:results/stageR_rule/r2_candidate_models.csv",
+        "work:results/stageR_rule/stageR2_run_metadata.json",
+        "work:results/stage3_nested_validation/nested_validation_performance.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stageR_rule",
+      "output_files": [
+        "work:results/stageR_rule/r4_operational_high_risk_profile.csv",
+        "work:results/stageR_rule/r4_pre_disability_relevance.md",
+        "work:results/stageR_rule/r4_rule_vs_emerging_overlap.csv",
+        "work:results/stageR_rule/stageR4_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ]
+    },
+    "r5": {
+      "description": "Internal and IPW rule validation",
+      "script": "analytic_code/pragmatic_rule/stageR5_rule_validation.py",
+      "depends_on": [
+        "r4",
+        "stage4"
+      ],
+      "inputs": [
+        "work:results/stage2_level_change/level_change_features.csv",
+        "expanded:02_data_processing/analysis_dataset_landmark.csv",
+        "expanded:03_phenotype_derivation/phenotype_assignments.csv",
+        "work:RESULTS_INDEX.md"
+      ],
+      "output_directory": "work:results/stageR_rule",
+      "note": "Uses stage4 functions to rebuild IPW data, rather than reading a saved weights file.",
+      "output_files": [
+        "work:results/stageR_rule/r5_internal_validation.csv",
+        "work:results/stageR_rule/r5_rule_stability_summary.md",
+        "work:results/stageR_rule/stageR5_run_metadata.json",
+        "work:RESULTS_INDEX.md"
+      ]
+    },
+    "r6": {
+      "description": "Rule synthesis",
+      "script": "analytic_code/pragmatic_rule/stageR6_integration.py",
+      "depends_on": [
+        "r3",
+        "r4",
+        "r5"
+      ],
+      "inputs": [
+        "work:results/stageR_rule/r3_model_rule_comparison.csv",
+        "work:results/stageR_rule/r4_operational_high_risk_profile.csv",
+        "work:results/stageR_rule/r5_internal_validation.csv",
+        "work:RESULTS_INDEX.md",
+        "work:LIMITATIONS_OF_REANALYSIS.md"
+      ],
+      "output_directory": "work:results/stageR_rule",
+      "output_files": [
+        "work:results/stageR_rule/r6_mainpaper_recommendation.md",
+        "work:results/stageR_rule/r6_pragmatic_rule_summary.md",
+        "work:results/stageR_rule/r6_supplement_recommendation.md",
+        "work:results/stageR_rule/stageR6_run_metadata.json",
+        "work:RESULTS_INDEX.md",
+        "work:LIMITATIONS_OF_REANALYSIS.md"
+      ]
+    },
+    "klosa-audit": {
+      "description": "Optional inventory of local KLoSA resources",
+      "script": "analytic_code/klosa_external_applicability/build_k1_feasibility_audit.py",
+      "depends_on": [],
+      "inputs": [
+        "klosa_raw:w01_e.dta",
+        "klosa_raw:w02_e.dta",
+        "klosa_raw:w03_e.dta",
+        "klosa_raw:w04_e.dta",
+        "klosa_raw:w05_e.dta",
+        "klosa_raw:w06_e.dta",
+        "klosa_raw:w07_e.dta",
+        "klosa_raw:w08_e.dta",
+        "klosa_raw:w09_e.dta",
+        "klosa_raw:str01_e.dta",
+        "klosa_raw:str02_e.dta",
+        "klosa_raw:str03_e.dta",
+        "klosa_raw:str04_e.dta",
+        "klosa_raw:str05_e.dta",
+        "klosa_raw:str06_e.dta",
+        "klosa_raw:str07_e.dta",
+        "klosa_raw:str08_e.dta",
+        "klosa_raw:str09_e.dta",
+        "klosa_raw:Lt01_e.dta",
+        "klosa_raw:Lt02_e.dta",
+        "klosa_raw:Lt03_e.dta",
+        "klosa_raw:Lt04_e.dta",
+        "klosa_raw:Lt05_e.dta",
+        "klosa_raw:Lt06_e.dta",
+        "klosa_raw:Lt07_e.dta",
+        "klosa_raw:Lt08_e.dta",
+        "klosa_raw:Lt09_e.dta",
+        "klosa_raw:w05_new_e.dta"
+      ],
+      "output_directory": "work:results/klosa_external_validation",
+      "note": "The original inventory reads all 28 listed wave files to count rows. It is not data-free. Optional Gateway/exit/imputation resources are reported when present; the audit does not validate model results.",
+      "output_files": [
+        "work:results/klosa_external_validation/charls_to_klosa_crosswalk.csv",
+        "work:results/klosa_external_validation/charls_to_klosa_crosswalk.xlsx",
+        "work:results/klosa_external_validation/klosa_feasibility_audit.md",
+        "work:results/klosa_external_validation/klosa_raw_wave_counts.csv"
+      ]
+    },
+    "klosa-build": {
+      "description": "Build Gateway harmonized KLoSA with Stata",
+      "script": "data_processing_scripts/klosa_processing/run_gateway_harmonized_klosa_build.py",
+      "depends_on": [],
+      "inputs": [
+        "gateway_do:",
+        "klosa_raw:w01_e.dta",
+        "klosa_raw:w02_e.dta",
+        "klosa_raw:w03_e.dta",
+        "klosa_raw:w04_e.dta",
+        "klosa_raw:w05_e.dta",
+        "klosa_raw:w06_e.dta",
+        "klosa_raw:w07_e.dta",
+        "klosa_raw:w08_e.dta",
+        "klosa_raw:w09_e.dta",
+        "klosa_raw:w05_new_e.dta",
+        "klosa_data:w02_exit_e.dta",
+        "klosa_data:w03_exit_e.dta",
+        "klosa_data:w04_exit_e.dta",
+        "klosa_data:w05_exit_e.dta",
+        "klosa_data:w06_Exit_e.dta",
+        "klosa_data:2018 KLoSA 7 wave EXIT.zip",
+        "klosa_data:KLoSA 8th wave_EXIT.zip",
+        "klosa_data:KLoSA 9 wave Exit.zip"
+      ],
+      "output_directory": "work:results/klosa_external_validation/gateway_harmonized_build",
+      "input_alternatives": [
+        [
+          "klosa_data:KLoSA_Imputation_E_v2_20210324.zip",
+          "klosa_data:KLoSA_Imputation_E_v2_20210324 (1).zip"
+        ]
+      ],
+      "requires_stata": true,
+      "requires_gateway_placeholders": true,
+      "note": "Also writes gateway_build input links, extracted files, do-file and Stata logs. Requires the official do-file and its dependencies. macOS/Linux batch invocation; Windows/WSL not validated.",
+      "output_files": [
+        "work:results/klosa_external_validation/gateway_harmonized_build/GH_KLoSA_f.dta",
+        "work:results/klosa_external_validation/gateway_harmonized_build/bukpmcwp_build.do",
+        "work:results/klosa_external_validation/gateway_harmonized_build/bukpmcwp_build.log",
+        "work:results/klosa_external_validation/gateway_harmonized_build/build_stdout_stderr.log",
+        "gateway_build:output/GH_KLoSA_f.dta",
+        "gateway_build:bukpmcwp_build.do",
+        "gateway_build:bukpmcwp_build.log",
+        "gateway_build:build_stdout_stderr.log"
+      ],
+      "additional_output_directories": [
+        "gateway_build:input",
+        "gateway_build:output",
+        "gateway_build:logs"
+      ]
+    },
+    "k2": {
+      "description": "Harmonized wave3-wave4 cohort and sample flow",
+      "script": "analytic_code/klosa_external_applicability/build_k2_validation_cohort.py",
+      "depends_on": [
+        "klosa-build"
+      ],
+      "inputs": [
+        "harmonized:"
+      ],
+      "output_directory": "work:results/klosa_external_validation",
+      "note": "Can use an existing licensed GH_KLoSA_f.dta instead of running klosa-build.",
+      "output_files": [
+        "work:results/klosa_external_validation/klosa_sample_flow.csv",
+        "work:results/klosa_external_validation/klosa_validation_cohort_definition.md"
+      ]
+    },
+    "k3": {
+      "description": "Structural M1 external replication",
+      "script": "analytic_code/klosa_external_applicability/build_k3_m1_validation_status.py",
+      "depends_on": [
+        "k2"
+      ],
+      "inputs": [
+        "harmonized:"
+      ],
+      "output_directory": "work:results/klosa_external_validation",
+      "note": "KLoSA-fitted OOF structural replication, not exact transport of CHARLS coefficients.",
+      "output_files": [
+        "work:results/klosa_external_validation/klosa_M1_calibration.csv",
+        "work:results/klosa_external_validation/klosa_M1_performance.csv",
+        "work:results/klosa_external_validation/klosa_M1_risk_stratification.csv",
+        "work:results/klosa_external_validation/klosa_M1_validation_summary.md"
+      ]
+    },
+    "k4": {
+      "description": "Adapted PTS6 external validation",
+      "script": "analytic_code/klosa_external_applicability/build_k4_pts6_validation.py",
+      "depends_on": [],
+      "inputs": [
+        "klosa_raw:str01_e.dta",
+        "klosa_raw:str02_e.dta",
+        "klosa_raw:str03_e.dta",
+        "klosa_raw:str04_e.dta"
+      ],
+      "output_directory": "work:results/klosa_external_validation",
+      "note": "Independent of the Gateway build; preserves the existing adapted-rule definitions.",
+      "output_files": [
+        "work:results/klosa_external_validation/klosa_PTS6_group_characteristics.csv",
+        "work:results/klosa_external_validation/klosa_PTS6_performance.csv",
+        "work:results/klosa_external_validation/klosa_PTS6_validation_summary.md"
+      ]
+    }
+  }
+}

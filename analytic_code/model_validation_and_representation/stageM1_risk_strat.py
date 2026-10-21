@@ -6,6 +6,10 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import project_root
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -16,12 +20,11 @@ from statsmodels.stats.proportion import proportion_confint
 
 
 SEED = 20260325
-ROOT = Path("/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging")
+ROOT = project_root()
 OUTDIR = ROOT / "results" / "stageM1_risk_strat"
 RESULTS_INDEX = ROOT / "RESULTS_INDEX.md"
 
-sys.path.insert(0, str(ROOT / "scripts" / "stage2_level_change"))
-import stage2_level_change as s2  # noqa: E402
+from analytic_code.model_validation_and_representation import stage2_level_change as s2  # noqa: E402
 
 
 def f3(x: float | int | None) -> str:

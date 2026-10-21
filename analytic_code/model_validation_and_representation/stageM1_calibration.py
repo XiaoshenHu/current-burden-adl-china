@@ -6,6 +6,10 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import project_root
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -14,12 +18,11 @@ from statsmodels.nonparametric.smoothers_lowess import lowess
 from statsmodels.stats.proportion import proportion_confint
 
 
-ROOT = Path("/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging")
+ROOT = project_root()
 OUTDIR = ROOT / "results" / "stageM1_calibration"
 RESULTS_INDEX = ROOT / "RESULTS_INDEX.md"
 
-sys.path.insert(0, str(ROOT / "scripts" / "stageM1_risk_strat"))
-import stageM1_risk_strat as m1s  # noqa: E402
+from analytic_code.model_validation_and_representation import stageM1_risk_strat as m1s  # noqa: E402
 
 
 def f3(x: float | int | None) -> str:

@@ -5,6 +5,11 @@ import json
 import warnings
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import expanded_rerun_root, project_root
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -13,8 +18,8 @@ from matplotlib.backends.backend_pdf import PdfPages
 from scipy import stats
 
 
-PROJECT_ROOT = Path("/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging")
-RERUN_ROOT = PROJECT_ROOT / "rerun_risk_stratification_expanded_v2_20260323"
+PROJECT_ROOT = project_root()
+RERUN_ROOT = expanded_rerun_root()
 RESULTS_DIR = PROJECT_ROOT / "results" / "stage9_outcome_structure"
 LOGS_DIR = PROJECT_ROOT / "logs" / "stage9_outcome_structure"
 RESULTS_INDEX = PROJECT_ROOT / "RESULTS_INDEX.md"

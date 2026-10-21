@@ -5,6 +5,11 @@ import warnings
 from datetime import datetime
 from pathlib import Path
 
+# Resolve repository imports independently of the launch directory.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from reproducibility.project_paths import project_root
+
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
@@ -16,7 +21,7 @@ from sklearn.preprocessing import StandardScaler
 
 SEED = 20260325
 
-ROOT = Path("/Users/macbookpro-hu/Library/CloudStorage/OneDrive-个人/Xcode/Medical Research/PROJECTS/charls_life_course_aging")
+ROOT = project_root()
 RESULTS = ROOT / "results"
 OUTDIR = RESULTS / "stageR_rule"
 LOGDIR = ROOT / "logs" / "stageR_rule"
